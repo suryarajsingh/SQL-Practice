@@ -47,7 +47,7 @@ Select * from Emp where EName like 'a%'
 
 --2. Select all those employees who don't have a manager. 
 
-Select * from Emp where Job!= 'Manager'
+Select * from Emp where MGRID is NULL
 
 --3. List employee name, number and salary for those employees who earn in the range 1200 to 1400. 
 
@@ -71,7 +71,8 @@ Select EName, Sal from Emp Where Sal = (select max(Sal) from Emp) or Sal = (Sele
 
 --8. List full details of departments that don't have any employees. 
 
-
+Select DName as 'Dept having No Employee' , DeptNo , loc from Dept Where
+Dept.DeptNo not in (Select DeptNo from Emp)
 
 --9. Get the names and salaries of all the analysts earning more than 1200 who are based in department 20. Sort the answer by ascending order of name. 
 
@@ -79,7 +80,10 @@ Select EName, Sal from Emp where Job = 'Analyst' and Sal > 1200 and DeptNo = 20 
 
 --10. For each department, list its name and number together with the total salary paid to employees in that department. 
 
-
+SELECT D.DName , D.DeptNo , D.loc , isnull(sum(sal), 0) as 'Total Salary Paid'
+FROM Dept D Left join Emp E
+on D.DeptNo = E.DeptNo
+Group by D.DeptNo , D.DName , D.DeptNo , D.Loc
 
 --11. Find out salary of both MILLER and SMITH.
 
